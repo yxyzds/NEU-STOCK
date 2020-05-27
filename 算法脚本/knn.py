@@ -2,7 +2,7 @@ import csv
 from sklearn import neighbors
 from numpy import genfromtxt
 from sklearn.model_selection import train_test_split#分割数据集
-knn = neighbors.KNeighborsClassifier()#(n_neighbors=10)
+knn = neighbors.KNeighborsClassifier(n_neighbors=30)
 a = open('try1.csv', 'r+')
 reader = csv.reader(a)#按行读取内容
 headers = next(reader)#打印出为title那行
