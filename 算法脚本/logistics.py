@@ -2,12 +2,20 @@ from sklearn import datasets
 import numpy as np
 from sklearn.cross_validation import train_test_split
 
-iris = datasets.load_iris() # ÓÉÓÚIrisÊÇºÜÓĞÃûµÄÊı¾İ¼¯£¬scikit-learnÒÑ¾­Ô­Éú×Ô´øÁË¡£
+a = open('try1.csv', 'r+')
+reader = csv.reader(a)#æŒ‰è¡Œè¯»å–å†…å®¹
+headers = next(reader)#æ‰“å°å‡ºä¸ºtitleé‚£è¡Œ
+print(headers)
+dataPath = r"try1.csv"
+featureList = genfromtxt(dataPath, skip_header=0,delimiter=',',usecols=(0,1,2,3,4,5,6,7,8,9,10,11,12,13))
+labelList = genfromtxt(dataPath, skip_header=0,delimiter=',',usecols=(14))#å¾—åˆ°æ ‡ç­¾
+X= featureList[:]
+Y = labelList[:]
 X = iris.data[:, [2, 3]]
-y = iris.target # ±êÇ©ÒÑ¾­×ª»»³É0£¬1£¬2ÁË
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0) # ÎªÁË¿´Ä£ĞÍÔÚÃ»ÓĞ¼û¹ıÊı¾İ¼¯ÉÏµÄ±íÏÖ£¬Ëæ»úÄÃ³öÊı¾İ¼¯ÖĞ30%µÄ²¿·Ö×ö²âÊÔ
+y = iris.target # æ ‡ç­¾å·²ç»è½¬æ¢æˆ0ï¼Œ1ï¼Œ2äº†
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0) 
 
-# ÎªÁË×·Çó»úÆ÷Ñ§Ï°ºÍ×îÓÅ»¯Ëã·¨µÄ×î¼ÑĞÔÄÜ£¬ÎÒÃÇ½«ÌØÕ÷Ëõ·Å
+
 from sklearn.preprocessing import StandardScaler
 sc = StandardScaler()
 sc.fit(X_train) 
