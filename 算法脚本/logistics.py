@@ -11,8 +11,6 @@ featureList = genfromtxt(dataPath, skip_header=0,delimiter=',',usecols=(0,1,2,3,
 labelList = genfromtxt(dataPath, skip_header=0,delimiter=',',usecols=(14))#得到标签
 X= featureList[:]
 Y = labelList[:]
-X = iris.data[:, [2, 3]]
-y = iris.target # 标签已经转换成0，1，2了
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0) 
 
 
