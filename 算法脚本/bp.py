@@ -17,15 +17,15 @@ def sigmoid_derivative(x):
 
 class BP:
     def __init__(self, layer, iter, max_error):
-        self.input_n = layer[0]  # ÊäÈë²ãµÄ½Úµã¸öÊı d
-        self.hidden_n = layer[1]  # Òş²Ø²ãµÄ½Úµã¸öÊı q
-        self.output_n = layer[2]  # Êä³ö²ãµÄ½Úµã¸öÊı l
+        self.input_n = layer[0]  # è¾“å…¥å±‚çš„èŠ‚ç‚¹ä¸ªæ•° d
+        self.hidden_n = layer[1]  # éšè—å±‚çš„èŠ‚ç‚¹ä¸ªæ•° q
+        self.output_n = layer[2]  # è¾“å‡ºå±‚çš„èŠ‚ç‚¹ä¸ªæ•° l
         self.gj = []
         self.eh = []
-        self.input_weights = []   # ÊäÈë²ãÓëÒş²Ø²ãµÄÈ¨Öµ¾ØÕó
-        self.output_weights = []  # Òş²Ø²ãÓëÊä³ö²ãµÄÈ¨Öµ¾ØÕó
-        self.iter = iter          # ×î´óµü´ú´ÎÊı
-        self.max_error = max_error  # Í£Ö¹µÄÎó²î·¶Î§
+        self.input_weights = []   # è¾“å…¥å±‚ä¸éšè—å±‚çš„æƒå€¼çŸ©é˜µ
+        self.output_weights = []  # éšè—å±‚ä¸è¾“å‡ºå±‚çš„æƒå€¼çŸ©é˜µ
+        self.iter = iter          # æœ€å¤§è¿­ä»£æ¬¡æ•°
+        self.max_error = max_error  # åœæ­¢çš„è¯¯å·®èŒƒå›´
 
         # for i in range(self.input_n + 1):
         #     tmp = []
@@ -41,15 +41,15 @@ class BP:
         # self.input_weights = np.array(self.input_weights)
         # self.output_weights = np.array(self.output_weights)
 
-        # ³õÊ¼»¯Ò»¸ö(d+1) * qµÄ¾ØÕó£¬¶à¼ÓµÄ1ÊÇ½«Òş²Ø²ãµÄ·§Öµ¼ÓÈëµ½¾ØÕóÔËËãÖĞ
+        # åˆå§‹åŒ–ä¸€ä¸ª(d+1) * qçš„çŸ©é˜µï¼Œå¤šåŠ çš„1æ˜¯å°†éšè—å±‚çš„é˜€å€¼åŠ å…¥åˆ°çŸ©é˜µè¿ç®—ä¸­
         self.input_weights = np.random.random((self.input_n + 1, self.hidden_n))
-        # ³õÊ¼»°Ò»¸ö(q+1) * lµÄ¾ØÕó£¬¶à¼ÓµÄ1ÊÇ½«Êä³ö²ãµÄ·§Öµ¼ÓÈëµ½¾ØÕóÖĞ¼ò»¯¼ÆËã
+        # åˆå§‹è¯ä¸€ä¸ª(q+1) * lçš„çŸ©é˜µï¼Œå¤šåŠ çš„1æ˜¯å°†è¾“å‡ºå±‚çš„é˜€å€¼åŠ å…¥åˆ°çŸ©é˜µä¸­ç®€åŒ–è®¡ç®—
         self.output_weights = np.random.random((self.hidden_n + 1, self.output_n))
 
         self.gj = np.zeros(layer[2])
         self.eh = np.zeros(layer[1])
 
-    #  ÕıÏò´«²¥Óë·´Ïò´«²¥
+    #  æ­£å‘ä¼ æ’­ä¸åå‘ä¼ æ’­
     def forword_backword(self, xj, y, learning_rate=0.1):
         xj = np.array(xj)
         y = np.array(y)
@@ -79,21 +79,21 @@ class BP:
         self.eh = bh * (1 - bh) * wg1
         self.eh = self.eh[:, :-1]
 
-        #  ¸üĞÂÊä³ö²ãÈ¨Öµw£¬ÒòÎªÈ¨Öµ¾ØÕóµÄ×îºóÒ»ĞĞ±íÊ¾µÄÊÇ·§Öµ¶àÒÔÑ­»·Ö»µ½µ¹ÊıµÚ¶şĞĞ
+        #  æ›´æ–°è¾“å‡ºå±‚æƒå€¼wï¼Œå› ä¸ºæƒå€¼çŸ©é˜µçš„æœ€åä¸€è¡Œè¡¨ç¤ºçš„æ˜¯é˜€å€¼å¤šä»¥å¾ªç¯åªåˆ°å€’æ•°ç¬¬äºŒè¡Œ
         for i in range(self.output_weights.shape[0] - 1):
             for j in range(self.output_weights.shape[1]):
                 self.output_weights[i][j] -= learning_rate * self.gj[0][j] * bh[0][i]
 
-        #  ¸üĞÂÊä³ö²ã·§Öµb£¬È¨Öµ¾ØÕóµÄ×îºóÒ»ĞĞ±íÊ¾µÄÊÇ·§Öµ
+        #  æ›´æ–°è¾“å‡ºå±‚é˜€å€¼bï¼Œæƒå€¼çŸ©é˜µçš„æœ€åä¸€è¡Œè¡¨ç¤ºçš„æ˜¯é˜€å€¼
         for j in range(self.output_weights.shape[1]):
             self.output_weights[-1][j] -= learning_rate * self.gj[0][j]
 
-        #  ¸üĞÂÊäÈë²ãÈ¨Öµw
+        #  æ›´æ–°è¾“å…¥å±‚æƒå€¼w
         for i in range(self.input_weights.shape[0] - 1):
             for j in range(self.input_weights.shape[1]):
                 self.input_weights[i][j] -= learning_rate * self.eh[0][j] * xj[i]
 
-        # ¸üĞÂÊäÈë²ã·§Öµb
+        # æ›´æ–°è¾“å…¥å±‚é˜€å€¼b
         for j in range(self.input_weights.shape[1]):
             self.input_weights[-1][j] -= learning_rate * self.eh[0][j]
         return error
@@ -115,7 +115,7 @@ class BP:
         x_test = tmp
         an = np.dot(x_test, self.input_weights)
         bh = sigmoid(an)
-        #  ¶à¼ÓµÄ1ÓÃÀ´Óë·§ÖµÏà³Ë
+        #  å¤šåŠ çš„1ç”¨æ¥ä¸é˜€å€¼ç›¸ä¹˜
         tmp = np.ones((bh.shape[0], bh.shape[1] + 1))
         tmp[:, : -1] = bh
         bh = tmp
@@ -125,9 +125,10 @@ class BP:
         return yj
 
 if __name__ == '__main__':
-    #  Ö¸¶¨Éñ¾­ÍøÂçÊäÈë²ã£¬Òş²Ø²ã£¬Êä³ö²ãµÄÔªËØ¸öÊı
-    layer = [2, 4, 1]
-    X = [
+    #æ³¨é‡Šéƒ¨åˆ†æ˜¯ä½¿ç”¨å‚è€ƒï¼Œæ­£å¸¸ä½¿ç”¨æ—¶è¯·è¯»å…¥csvæ–‡ä»¶
+    #  æŒ‡å®šç¥ç»ç½‘ç»œè¾“å…¥å±‚ï¼Œéšè—å±‚ï¼Œè¾“å‡ºå±‚çš„å…ƒç´ ä¸ªæ•°
+    #layer = [2, 4, 1]
+    #X = [
             [1, 1],
             [2, 2],
             [1, 2],
@@ -135,10 +136,10 @@ if __name__ == '__main__':
             [2, 0],
             [2, -1]
         ]
-    y = [[0], [0], [0], [1], [1], [1]]
+    #y = [[0], [0], [0], [1], [1], [1]]
     # x_test = [[2, 3],
     #           [2, 2]]
-    #  ÉèÖÃ×î´óµÄµü´ú´ÎÊı£¬ÒÔ¼°×î´óÎó²îÖµ
+    #  è®¾ç½®æœ€å¤§çš„è¿­ä»£æ¬¡æ•°ï¼Œä»¥åŠæœ€å¤§è¯¯å·®å€¼
     bp = BP(layer, 10000, 0.0001)
     bp.fit(X, y)
     bp.predict(X)
